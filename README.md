@@ -40,7 +40,8 @@ Minikube is an open source tool that enables you to run Kubernetes on your lapto
 ![image](https://user-images.githubusercontent.com/59694469/220159399-853ac7f6-622d-4f5e-869b-af2261b18bcc.png)
 
 4. Click Kubernetes in the left side menu.
-![image](https://user-images.githubusercontent.com/59694469/220159501-563ca20d-8f8a-4c21-8743-51ec051bf1aa.png)
+
+ ![image](https://user-images.githubusercontent.com/59694469/220159501-563ca20d-8f8a-4c21-8743-51ec051bf1aa.png)
 
 5. Check the Enable Kubernetes box and then click the Apply & Restart button.
 ![image](https://user-images.githubusercontent.com/59694469/220159622-f01c5fcb-8d61-4d84-8137-ac4617cc7e22.png)
@@ -50,6 +51,7 @@ Minikube is an open source tool that enables you to run Kubernetes on your lapto
 ![image](https://user-images.githubusercontent.com/59694469/220159953-c49796e5-86dd-4f79-99d1-7d19943fe231.png)
 
 7. After the installation dialog disappears, look at the bottom left side of the General Settings page and make sure there is a green Kubernetes icon. If you click it, it should display a RUNNING tooltip.
+
 ![image](https://user-images.githubusercontent.com/59694469/220160050-c08dccab-a6d4-49a2-92e4-c25ec2b785ce.png)
 
 8. Finally, open up your terminal of choice and make sure that you can run ``` kubectl version ```
@@ -88,6 +90,7 @@ Your output should look similar to this:
 
 2. Check Minikube Status
 After you see a Done! message in your terminal, run minikube status to make sure the cluster is healthy. Pay particular attention that the **apiserver** is in a "**Running**" state. 
+
 ![image](https://user-images.githubusercontent.com/59694469/220164376-94a5a06f-5cc4-4470-92bc-be6121a4b002.png)
 
 3. Install kubectl
@@ -114,5 +117,7 @@ When we run **kubectl** command to run config files are running k8s clustor hand
 
 ### Kube-apiserver 
 kube-apiserver is 100% responsible for monitoring current status of all the different node inside the clustor and make sure every thing doing current thing.
+
+
 ![image](https://user-images.githubusercontent.com/59694469/220165639-4c034414-764d-43c1-a5b6-71cf9013a7e1.png)
 
