@@ -97,12 +97,12 @@ minikube start
 ```
 Your output should look similar to this:
 
-image.png
+![image](https://user-images.githubusercontent.com/59694469/220164433-a5b11feb-fea4-4f45-ad46-2bccdbe38402.png)
 
 2. Check Minikube Status
 After you see a Done! message in your terminal, run minikube status to make sure the cluster is healthy. Pay particular attention that the **apiserver** is in a "**Running**" state.
 
-image.png
+![image](https://user-images.githubusercontent.com/59694469/220164376-94a5a06f-5cc4-4470-92bc-be6121a4b002.png)
 
 3. Install kubectl
 In your terminal run the following:
@@ -113,11 +113,20 @@ sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 4. Test kubectl
 Lastly, open up your terminal and make sure that you can run ```kubectl version```
 
-image.png
+![image](https://user-images.githubusercontent.com/59694469/220164324-012a3785-35b5-4efc-89a4-7e9980dd966b.png)
 
 Note - the client and server can be off by one minor version without error or issue.
 
 
-image.png
+![image](https://user-images.githubusercontent.com/59694469/220164243-83d03b68-2cb1-4ae7-903a-4ea1dde9c54e.png)
 
+### Master 
+When we run **kubectl** command to run config files are running k8s clustor handle by mater.
+
+![image](https://user-images.githubusercontent.com/59694469/220165499-00df0e35-0fdb-495a-8ee0-441c74b15243.png)
+
+### Kube-apiserver 
+kube-apiserver is 100% responsible for monitoring current status of all the different node inside the clustor and make sure every thingdoing current thing.
+
+![image](https://user-images.githubusercontent.com/59694469/220165639-4c034414-764d-43c1-a5b6-71cf9013a7e1.png)
 
