@@ -130,6 +130,46 @@ kube-apiserver is 100% responsible for monitoring current status of all the diff
 
 ![image](https://user-images.githubusercontent.com/59694469/220165639-4c034414-764d-43c1-a5b6-71cf9013a7e1.png)
 
+
+* in config file we define object type using **kind** eg: ```kind: Service``` or ```kind: Pod```. line 2 in client-node-port.yaml 
+* line no 7 to line no 10 in client-node-port.yaml  port defination
+
+# Config files example
+
+#### file 1 : client-pod.yml
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: client-pod
+  labels:
+    component: web         <!-- key and value which used in client-node-port.yml (kind: Service) file  -->
+spec:
+  containers:
+    - name: client                          <!-- name of container -->
+      image: abhijeetjha1995/multi-client   <!-- Image of docker HUb -->
+      ports:
+        - containerPort: 3000               <!-- Container running on port -->
+
+```
+#### file 2 : client-node-port.yml
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-node-port
+spec:
+  type: NodePort
+  ports:
+    - port: 3050            <!-- K8s containers use it to intract each other -->
+      targetPort: 3000      <!-- Port where our app is running -->
+      nodePort: 31515       <!-- Port use to open the project in browser -->
+  selector:
+    component: web          <!-- labels key value of client-node-port.yml  -->
+```
+
 ### Running  container
 
 ```
