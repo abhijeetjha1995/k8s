@@ -59,6 +59,13 @@ Minikube is an open source tool that enables you to run Kubernetes on your lapto
 
 * Note - the client and server can be off by one minor version without error or issue.
 
+### Minikube Setup on Windows
+Follow to install : https://minikube.sigs.k8s.io/docs/start
+
+#### Start Minikube
+```
+minikube start
+```
 
 # Minikube Setup on Linux
 These instructions should be valid for Debian, Ubuntu, or Mint Linux distributions. Your experience may vary if using other distributions such as RHEL, Arch, non-desktop distributions like Ubuntu server, or lightweight distros which may omit many expected tools.
@@ -68,14 +75,6 @@ In your terminal run the following:
 ```
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube
-```
-
-### Minikube Setup on Windows
-Follow to install : https://minikube.sigs.k8s.io/docs/start
-
-#### Start Minikube
-```
-minikube start
 ```
 
 #### Starting Minikube and Testing Installation
@@ -96,6 +95,7 @@ minikube start
 ```
 Your output should look similar to this:
 ![image](https://user-images.githubusercontent.com/59694469/220164433-a5b11feb-fea4-4f45-ad46-2bccdbe38402.png)
+
 
 2. Check Minikube Status
 After you see a Done! message in your terminal, run minikube status to make sure the cluster is healthy. Pay particular attention that the **apiserver** is in a "**Running**" state. 
