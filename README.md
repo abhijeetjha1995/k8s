@@ -121,3 +121,29 @@ kube-apiserver is 100% responsible for monitoring current status of all the diff
 
 ![image](https://user-images.githubusercontent.com/59694469/220165639-4c034414-764d-43c1-a5b6-71cf9013a7e1.png)
 
+### Running  container
+
+```
+kubectl apply -f <filename>
+```
+
+* kubectl : CLI we use to change/run our cluter
+* apply : - change the current configuration of cluster
+* -f : we want to specify afile that hasthe cofig changes
+* <filename> : path of config file
+ 
+ ### Print the status of running pods
+ ```
+ kubectl get pods
+ ```
+ 
+ ### Print the status of running pods
+ ```
+ kubectl get services
+ ```
+
+ ### Get the k8s local machine running ip
+ 
+ ```
+ minikube ip
+ ```
