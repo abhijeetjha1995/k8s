@@ -132,15 +132,25 @@ kubectl apply -f <filename>
 * -f : we want to specify afile that hasthe cofig changes
 * <filename> : path of config file
  
+ Eg: 
+ ![image](https://user-images.githubusercontent.com/59694469/220335206-f004fa4d-8a89-44e0-9b70-233860f90047.png)
+
+ 
  ### Print the status of running pods
  ```
  kubectl get pods
  ```
+ Eg:
+ ![image](https://user-images.githubusercontent.com/59694469/220335352-e504710d-8ec9-44da-aa30-1d5e15d34362.png)
+
  
  ### Print the status of running pods
  ```
  kubectl get services
  ```
+ Eg:
+ ![image](https://user-images.githubusercontent.com/59694469/220335446-0a49cd46-1806-40af-93cb-888e2b2111d1.png)
+
 
  ### Get the k8s local machine running ip
  
