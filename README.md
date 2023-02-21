@@ -69,6 +69,15 @@ In your terminal run the following:
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube
 ```
+
+### Minikube installation on linux
+https://minikube.sigs.k8s.io/docs/start
+
+#### Start Minikube
+```
+minikube start
+```
+
 #### Starting Minikube and Testing Installation
 
 
