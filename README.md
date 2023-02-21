@@ -70,8 +70,8 @@ curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-
 sudo install minikube-linux-amd64 /usr/local/bin/minikube
 ```
 
-### Minikube installation on linux
-https://minikube.sigs.k8s.io/docs/start
+### Minikube Setup on Windows
+Follow to install : https://minikube.sigs.k8s.io/docs/start
 
 #### Start Minikube
 ```
