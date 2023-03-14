@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: static-pod
+  name: client-pod
   labels:
     component: web
 spec:
   containers:
     - name: static
-      image: abhijeetjha1995/multi-worker
+      image: abhijeetjha1995/multi-client:v4
       ports:
         - containerPort: 3000
