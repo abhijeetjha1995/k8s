@@ -193,7 +193,7 @@ kubectl apply -f <filename>
  ![image](https://user-images.githubusercontent.com/59694469/220335352-e504710d-8ec9-44da-aa30-1d5e15d34362.png)
 
  
- ### Print the status of running pods
+ ### Print the status of running services
  ```
  kubectl get services
  ```
@@ -206,3 +206,67 @@ kubectl apply -f <filename>
  ```
  minikube ip
  ```
+
+### Delete service
+```
+  kubectl delete service <service-Name>
+```
+
+### Delete pod
+```
+  kubectl delete pod <pod-Name>
+```
+
+### Delete pod or services using config file
+```
+  kubectl delete -f <fileName.yaml>
+```
+eg:
+```
+  kubectl delete -f client-pod.yaml
+```
+
+### Print the status of running deployments
+```
+  kubectl get deployments
+```
+
+### Get Detailed info about Pod
+```
+  kubectl get pods -o wide
+```
+
+### description about a pod ya all the pod
+
+```
+  kubectl describe pods
+
+
+  <!-- for a single pod  -->
+  kubectl describe pods <pod-name>
+```
+
+
+## Imperative command to update the image 
+
+We need this command to update runing k8s pod image. Whenever we push new version on image to docker hub then we need
+to inform k8s that image updated with the latest version then pods get pull of latest version of pod and running that 
+so user can see new changes of that image.
+
+```
+  kubectl set image <object_type>/<object_name> <container_name>=<new image to use>
+```
+* <object_type>     : Type of object. eg: deployment
+* <object_name>     : Name of the object eg.: client-deployment (reference of client-deployment.yaml) 
+* <container_name>  : Name of the container which we are updating  (get this from config file)
+* <new image to use>: Full name of image to use with tag
+
+eg: 
+```
+  kubectl set image deployment/client-deployment client=abhijeetjha1995/multi-client:v5
+```
+
+### Access the docker service running images in k8s virtual node
+```
+  eval $(minikube docker-env)
+```
