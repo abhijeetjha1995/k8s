@@ -298,7 +298,10 @@ eg.
 ![image](https://user-images.githubusercontent.com/59694469/226650216-03996084-0f74-43f3-942a-d1b715c6de77.png)
 
 
-#### When we are storing data in database container (like: Postgres ) data stored in that particluar conatiner only if container crashed and re-create new one then all sotred data will delete and new container created with new clean database conatiner. To void such type of issue we use volume of database. Here we can say **Voulme** way to store the data on host machine if db container will crashed and new container is created then data is safe because data stored in not stored in taht particular container data stored in out side of container on host machine.
+#### When we are storing data in database container (like: Postgres ) data stored in that particluar conatiner only if container crashed and re-create new one then all sotred data will delete and new container created with new clean database container. To avoid such type of issue we use volume of database.
+ 
+* Persistent Volume Claim :  Here we can say it is the way to store the data on host machine if db container will crashed and new container is created then data is safe because data is in not stored in that particular container data stored in out side of container on host machine. 
+ 
 
 ![image](https://user-images.githubusercontent.com/59694469/226652472-518119e0-af4a-4052-a299-e1793649f081.png)
 
