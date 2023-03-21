@@ -316,3 +316,25 @@ eg.
 
 ![image](https://user-images.githubusercontent.com/59694469/226652594-9e1f53b2-e7da-406d-b59b-80bae8aab4f2.png)
 
+ 
+ ## Creating a Secret
+ 
+ * The way to store confidential data (like Username and password)
+ 
+ ![image](https://user-images.githubusercontent.com/59694469/226655138-b4fe7259-5ee3-4073-a23f-893729ec793a.png)
+ 
+ eg: 
+ ```
+  kubectl create secret generic password --from-literal PGPASSWORD=password123
+ ```
+ 
+ This Secret password used in postgres-deployment.yaml : line no : 29 to 33 
+ ```
+             env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pgpassword
+                  key: PGPASSWORD
+ ```
+
