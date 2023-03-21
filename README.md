@@ -284,7 +284,11 @@ eg.
  1. client-deployment.yaml
  2. client-cluster-ip-service.yaml
 
-*   **client-deployment.yaml** used for crated a pod.
+*   **client-deployment.yaml** used for created a pod.
 *   **client-cluster-ip-service.yaml** used for make client pod accesable to other service like Ingress Service then it can be access by user/traffic 
 
+#### To run all config (.yaml) file from the folder in single command
 
+```
+  kubectl apply -f k8
+```
