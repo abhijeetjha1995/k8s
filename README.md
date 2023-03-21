@@ -292,3 +292,24 @@ eg.
 ```
   kubectl apply -f k8
 ```
+
+## Volume
+
+![image](https://user-images.githubusercontent.com/59694469/226650216-03996084-0f74-43f3-942a-d1b715c6de77.png)
+
+
+#### When we are storing data in database container (like: Postgres ) data stored in that particluar conatiner only if container crashed and re-create new one then all sotred data will delete and new container created with new clean database conatiner. To void such type of issue we use volume of database. Here we can say **Voulme** way to store the data on host machine if db container will crashed and new container is created then data is safe because data stored in not stored in taht particular container data stored in out side of container on host machine.
+
+![image](https://user-images.githubusercontent.com/59694469/226652472-518119e0-af4a-4052-a299-e1793649f081.png)
+
+
+![image](https://user-images.githubusercontent.com/59694469/226650349-de555bcb-1130-4a22-8b28-02b7b5087d65.png)
+
+
+![image](https://user-images.githubusercontent.com/59694469/226652338-3d3ddf6c-729a-4d68-ab58-792a9d0ee8cf.png)
+
+![image](https://user-images.githubusercontent.com/59694469/226652393-e38e168a-13d3-4e3d-b04a-957747ae9e93.png)
+
+
+![image](https://user-images.githubusercontent.com/59694469/226652594-9e1f53b2-e7da-406d-b59b-80bae8aab4f2.png)
+
