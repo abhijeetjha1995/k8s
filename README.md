@@ -273,3 +273,18 @@ eg:
 
 
 # Multi Conatiner Deploy
+
+![image](https://user-images.githubusercontent.com/59694469/226537480-a6b1465f-62be-4b26-a204-b71ee46cb39c.png)
+
+
+### Here we need to create 2 config file for each deployment. File created followed by service name with 1st for deployment.yaml and 2nd  cluster-ip-service.yaml
+
+eg. 
+
+ 1. client-deployment.yaml
+ 2. client-cluster-ip-service.yaml
+
+*   **client-deployment.yaml** used for crated a pod.
+*   **client-cluster-ip-service.yaml** used for make client pod accesable to other service like Ingress Service then it can be access by user/traffic 
+
+
