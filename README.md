@@ -316,6 +316,39 @@ eg.
 
 ![image](https://user-images.githubusercontent.com/59694469/226652594-9e1f53b2-e7da-406d-b59b-80bae8aab4f2.png)
 
+ ### commands
+ * Get Persistent Volume 
+ ```
+  kubectl get pv
+ ```
+ 
+ * Get Persistent Volume Claim
+ ```
+  kubectl get pvc
+ ```
+ 
+ ### Expamle of Persistent Volume Claim config file *database-persistent-volume-claim.yaml*
+ 
+ ```
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: database-persistent-volume-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi <!-- Size of reserved memory --> 
+
+ ```
+ 
+ * accessModes types :
+ 
+ ![image](https://user-images.githubusercontent.com/59694469/226830553-a296a431-de19-4ca7-a79b-225c75693526.png)
+
+ 
+ 
  
  ## Creating a Secret
  
