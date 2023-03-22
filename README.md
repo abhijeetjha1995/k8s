@@ -403,7 +403,7 @@ spec:
   kubectl create secret generic password --from-literal PGPASSWORD=password123
  ```
  
- This Secret password used in postgres-deployment.yaml : line no : 29 to 33 
+ How Secret password is used in postgres-deployment.yaml : line no : 29 to 33 
  ```
              env:
             - name: POSTGRES_PASSWORD
