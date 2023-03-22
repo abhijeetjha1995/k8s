@@ -284,8 +284,50 @@ eg.
  1. client-deployment.yaml
  2. client-cluster-ip-service.yaml
 
-*   **client-deployment.yaml** used for created a pod.
+*   **client-deployment.yaml** used for created a pod and development.
 *   **client-cluster-ip-service.yaml** used for make client pod accesable to other service like Ingress Service then it can be access by user/traffic 
+
+eg: 
+client-deployment.yaml
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: web
+  template:
+    metadata:
+      labels:
+        component: web
+    spec:
+      containers:
+        - name: client
+          image: abhijeetjha1995/multi-client
+          ports:
+            - containerPort: 3000
+            env:  <!-- here we define env >
+
+```
+
+client-cluster-ip-service.yaml
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-cluster-ip-service
+spec:
+  type: ClusterIP
+  selector:
+    component: web
+  ports:
+    - port: 3000
+      targetPort: 3000
+```
+
 
 #### To run all config (.yaml) file from the folder in single command
 
