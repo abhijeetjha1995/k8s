@@ -390,8 +390,25 @@ spec:
  ![image](https://user-images.githubusercontent.com/59694469/226830553-a296a431-de19-4ca7-a79b-225c75693526.png)
 
  
+ ### Storage Class Name
+  A StorageClass provides a way for administrators to describe the "classes" of storage they offer. Different classes might map to quality-of-service levels, or to backup policies, or to arbitrary policies determined by the cluster administrators. Kubernetes itself is unopinionated about what classes represent.
  
- 
+ * In this project i don't define storageClassName then PVC create default storageClassName.
+
+ * storageClassName is different for different machine host here is the url where we can find out storageClassName for different cloud platform : https://kubernetes.io/docs/concepts/storage/storage-classes
+
+* *commands*
+  * Get list of Storage Class
+
+  ```
+    kubectl get storageclass
+  ```
+  * Get Details about Storage Class
+
+  ```
+    kubectl describe storageclass 
+  ```
+
  ## Creating a Secret
  
  * The way to store confidential data (like Username and password)
