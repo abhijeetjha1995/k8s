@@ -430,3 +430,53 @@ spec:
                   key: PGPASSWORD
  ```
 
+# Handling trafic with ingress controllers 
+
+## Optional Reading on Ingress Nginx
+Just in case you wanted to understand ingress-nginx a bit better, check out this article by Hongli Lai - https://www.joyfulbikeshedding.com/blog/2018-03-26-studying-the-kubernetes-ingress-system.html.  Hongli is an absolute genius, he co-created Phusion Passenger, an extremely popular webserver that integrates with Nginx.
+
+## Docker Driver and Ingress - IMPORTANT
+We've noticed many macOS and Windows students attempting to take the course with the docker driver when using Minikube instead of Docker Desktop.
+
+The docker driver is not supported for use in this course if you are on macOS or Windows. It currently does not work with any type of ingress:
+
+https://minikube.sigs.k8s.io/docs/drivers/docker/#known-issues
+
+If you have started the course with the docker driver, you will need to switch to a different driver in order to continue.
+
+Delete your cluster:
+```
+minikube delete
+```
+Restart with a different driver:
+
+macOS:
+```
+minikube start --driver=hyperkit
+```
+or
+```
+minikube start --driver=virtualbox
+```
+Windows:
+
+Windows students should be using Docker Desktop with WSL2 and not Minikube. A VM driver will not work since it would require virtualization that is in conflict with WSL2. You should stop and head back to the instructions to enable Docker Desktop's Kubernetes instead.
+
+Linux:
+
+If you are a Linux user, the ingress add-on should be supported when using the docker driver.
+
+
+## Ingress Nginx Installation Info
+In the upcoming lecture, we will be installing Ingress Nginx. In the video, it is shown that there is a required mandatory command that needed to be run for all providers. This has since been removed, so, the provider-specific commands (Docker Desktop, Minikube, etc) are all that are required. Please triple-check that you are installing Ingress Nginx and not Nginx Ingress, which is a totally different and incompatible library.
+
+### Installation - Docker Desktop (macOS and Windows)
+
+![image](https://user-images.githubusercontent.com/59694469/227201039-427856b0-a882-46bf-a12b-004df3307403.png)
+
+
+https://kubernetes.github.io/ingress-nginx/deploy/#quick-start
+
+Installation - Minikube
+
+https://kubernetes.github.io/ingress-nginx/deploy/#minikube
