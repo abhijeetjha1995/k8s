@@ -468,7 +468,7 @@ If you are a Linux user, the ingress add-on should be supported when using the d
 
 
 ## Ingress Nginx Installation Info
-In the upcoming lecture, we will be installing Ingress Nginx. In the video, it is shown that there is a required mandatory command that needed to be run for all providers. This has since been removed, so, the provider-specific commands (Docker Desktop, Minikube, etc) are all that are required. Please triple-check that you are installing Ingress Nginx and not Nginx Ingress, which is a totally different and incompatible library.
+In the upcoming lecture, we will be installing Ingress Nginx. In the video, it is shown that there is a required mandatory command that needed to be run for all providers. This has since been removed, so, the provider-specific commands (Docker Desktop, Minikube, etc) are all that are required. Please triple-check that you are installing Ingress Nginx(https://kubernetes.github.io/ingress-nginx/) and not Nginx Ingress(https://docs.nginx.com/nginx-ingress-controller/), which is a totally different and incompatible library.
 
 ### Installation - Docker Desktop (macOS and Windows)
 
