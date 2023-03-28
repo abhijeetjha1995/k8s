@@ -3,9 +3,6 @@ jobs:
   test:
     machine:
       enabled: true
-      environment:
-        SHORT_GIT_HASH: $(echo $CIRCLE_SHA1 | cut -c -7)
-        SHA_RAM: $(git rev-parse HEAD)
     working_directory: ~/app
     steps:
       - checkout
