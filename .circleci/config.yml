@@ -11,19 +11,10 @@ jobs:
           command: |
             docker build -t abhijeetjha1995/react-test -f ./client/Dockerfile.dev ./client
             docker run -e CI=true abhijeetjha1995/react-test npm test 
-      - run:
-          name: LOG
-          command: echo ${SHA_RAM}
   build_image_and_deploy_staging:
     docker:
       - image: circleci/python:3.7
-
-    working_directory: ~/app
-
     steps:
-      - attach_workspace:
-          at: ~/app
-
       - run:
           name: Install awscli and gettext-base
           command: |
