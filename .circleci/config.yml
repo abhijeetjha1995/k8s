@@ -42,10 +42,10 @@ jobs:
 
       - run:
           name: Console
-          command: |
-            echo 'SHA=$(git rev-parse HEAD)' >> "$BASH_ENV"
-            echo ${SHA}
-            echo git rev-parse HEAD
+          command: echo 'SHA_LOG=$(git rev-parse HEAD)' >> "$BASH_ENV"
+      - run:
+          name: "Print console"
+          command: echo ${SHA_LOG}
 
       - run:
           name: Login to repository and build docker image
