@@ -1,5 +1,7 @@
 version: 2.1
 jobs:
+  machine:
+    enabled: true
   setup:
     docker:
       - image: circleci/node:10.15.3
