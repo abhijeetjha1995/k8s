@@ -98,10 +98,7 @@ jobs:
 workflows:
   build-test-and-deploy:
     jobs:
-      - setup
-      - test:
-          requires:
-            - setup
+      - test
       - build_image_and_deploy_staging:
           requires:
             - test
