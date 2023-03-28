@@ -11,7 +11,6 @@ jobs:
           command: |
             docker build -t abhijeetjha1995/react-test -f ./client/Dockerfile.dev ./client
             docker run -e CI=true abhijeetjha1995/react-test npm test 
-            echo 'SHA=$(git rev-parse HEAD)' >> "$BASH_ENV"
   build_image_and_deploy_staging:
     docker:
       - image: circleci/python:3.7
@@ -40,6 +39,12 @@ jobs:
             sudo mv ./kubectl /usr/local/bin/kubectl
 
       - setup_remote_docker
+
+      - run:
+          name: Console
+          command: |
+            echo 'SHA=$(git rev-parse HEAD)' >> "$BASH_ENV"
+            echo ${SHA}
 
       - run:
           name: Login to repository and build docker image
