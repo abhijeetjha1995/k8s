@@ -9,15 +9,13 @@ jobs:
       - run:
           name: Update npm
           command: "sudo npm install -g npm@latest"
-      - restore_cache:
-          key: dependency-cache-{{ .Branch }}-{{ checksum "package.json" }}
       - run:
-          name: Install npm
-          command: npm install
-      - save_cache:
-          key: dependency-cache-{{ .Branch }}-{{ checksum "package.json" }}
-          paths:
-            - node_modules
+          name: Run Unit tests
+          command: |
+            docker build -t abhijeetjha1995/react-test -f ./client/Dockerfile.dev ./client
+            docker run -e CI=true abhijeetjha1995/react-test npm test 
+            SHA=$(git rev-parse HEAD)
+            
       - save_cache:
           key: v1-repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
           paths:
