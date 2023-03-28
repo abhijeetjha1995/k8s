@@ -12,12 +12,6 @@ jobs:
             docker build -t abhijeetjha1995/react-test -f ./client/Dockerfile.dev ./client
             docker run -e CI=true abhijeetjha1995/react-test npm test 
             SHA=$(git rev-parse HEAD)
-
-      - restore_cache:
-          key: v1-repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-      - restore_cache:
-          key: dependency-cache-{{ .Branch }}-{{ checksum "package.json" }}
-
   build_image_and_deploy_staging:
     docker:
       - image: circleci/python:3.7
@@ -69,13 +63,14 @@ jobs:
             kubectl get pod
 
 workflows:
+  version: 2.1
   build-test-and-deploy:
     jobs:
       - test
       - build_image_and_deploy_staging:
           requires:
             - test
-          filters:
-            branches:
-              only:
-                - master
+          # filters:
+          #   branches:
+          #     only:
+          #       - master
