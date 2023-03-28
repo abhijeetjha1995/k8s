@@ -36,9 +36,7 @@ jobs:
 
       - run:
           name: Console
-          command: |
-            echo 'SHA_LOG=$(git rev-parse HEAD)' >> "$BASH_ENV"
-            git rev-parse HEAD
+          command: git rev-parse HEAD
       - run:
           name: "Print console"
           command: echo ${SHA_LOG}
