@@ -1,52 +1,105 @@
 version: 2.1
-
-orbs:
-  aws-elastic-beanstalk: circleci/aws-elastic-beanstalk@2.0.1
-  node: circleci/node@4.7
-
 jobs:
-  unit-test:
-    machine:
-      enabled: true
+  setup:
+    docker:
+      - image: circleci/node:10.15.3
+    working_directory: ~/app
     steps:
       - checkout
       - run:
-          name: Run Unit tests
-          command: |
-            docker build -t abhijeetjha1995/react-test -f ./client/Dockerfile.dev ./client
-            docker run -e CI=true abhijeetjha1995/react-test npm test 
-  deploy:
-    machine:
-      enabled: true
+          name: Update npm
+          command: "sudo npm install -g npm@latest"
+      - restore_cache:
+          key: dependency-cache-{{ .Branch }}-{{ checksum "package.json" }}
+      - run:
+          name: Install npm
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ .Branch }}-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+      - save_cache:
+          key: v1-repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/app
+  test:
+    docker:
+      - image: circleci/node:10.15.3
+    working_directory: ~/app
     steps:
-      - checkout
+      - restore_cache:
+          key: v1-repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          key: dependency-cache-{{ .Branch }}-{{ checksum "package.json" }}
       - run:
-          name: Login Docker Hub and Upload image to Hub
-          command: |
-            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-            docker build -t abhijeetjha1995/multi-client ./client
-            docker build -t abhijeetjha1995/multi-nginx ./nginx
-            docker build -t abhijeetjha1995/multi-server ./server
-            docker build -t abhijeetjha1995/multi-worker ./worker
-            docker push abhijeetjha1995/multi-client
-            docker push abhijeetjha1995/multi-nginx
-            docker push abhijeetjha1995/multi-server
-            docker push abhijeetjha1995/multi-worker
+          name: Test code
+          command: npm test
+      - persist_to_workspace:
+          root: ~/app
+          paths:
+            - .
+
+  build_image_and_deploy_staging:
+    docker:
+      - image: circleci/python:3.7
+
+    working_directory: ~/app
+
+    steps:
+      - attach_workspace:
+          at: ~/app
+
       - run:
-          name: Installing EBS cli 
+          name: Install awscli and gettext-base
           command: |
-            sudo apt-get -y -qq update
-            sudo apt-get install python3-pip python3-dev build-essential
-            sudo pip3 install awsebcli botocore==1.19.63 --upgrade
+            sudo pip3 install awscli
       - run:
-          name: Deploy to Elastic Beanstalk
+          name: Install aws-iam-authenticator
           command: |
-            eb deploy Multidockerdeploy-env
+            curl -o aws-iam-authenticator curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/aws-iam-authenticator
+            chmod +x ./aws-iam-authenticator
+            sudo mv ./aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
+      - run:
+          name: Install kubectl
+          command: |
+            curl -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/kubectl
+            chmod +x ./kubectl
+            sudo mv ./kubectl /usr/local/bin/kubectl
+
+      - setup_remote_docker
+
+      - run:
+          name: Login to repository and build docker image
+          command: |
+            eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+            docker build -t ${AWS_REPOSITORY_URL}/${REPOSITORY_NAME}:${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM} .
+            docker push ${AWS_REPOSITORY_URL}/${REPOSITORY_NAME}:${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}
+      - run:
+          name: Prepare K8S templates
+          command: |
+            aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name $CLUSTER_NAME
+            rm -rf .k8s/.generated && mkdir -p .k8s/.generated
+            for f in .k8s/templates/staging.yml
+              do
+              envsubst < $f > ".k8s/.generated/$(basename $f)"
+            done
+      - run:
+          name: Deploy
+          command: |
+            kubectl apply -f .k8s/.generated/ --validate=true
+            kubectl get pod
+
 workflows:
-  version: 2.1
-  build_deploy:
+  build-test-and-deploy:
     jobs:
-      - unit-test
-      - deploy:
+      - setup
+      - test:
           requires:
-            - unit-test
+            - setup
+      - build_image_and_deploy_staging:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master

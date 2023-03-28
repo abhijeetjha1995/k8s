@@ -1,0 +1,52 @@
+version: 2.1
+
+orbs:
+  aws-elastic-beanstalk: circleci/aws-elastic-beanstalk@2.0.1
+  node: circleci/node@4.7
+
+jobs:
+  unit-test:
+    machine:
+      enabled: true
+    steps:
+      - checkout
+      - run:
+          name: Run Unit tests
+          command: |
+            docker build -t abhijeetjha1995/react-test -f ./client/Dockerfile.dev ./client
+            docker run -e CI=true abhijeetjha1995/react-test npm test 
+  deploy:
+    machine:
+      enabled: true
+    steps:
+      - checkout
+      - run:
+          name: Login Docker Hub and Upload image to Hub
+          command: |
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+            docker build -t abhijeetjha1995/multi-client ./client
+            docker build -t abhijeetjha1995/multi-nginx ./nginx
+            docker build -t abhijeetjha1995/multi-server ./server
+            docker build -t abhijeetjha1995/multi-worker ./worker
+            docker push abhijeetjha1995/multi-client
+            docker push abhijeetjha1995/multi-nginx
+            docker push abhijeetjha1995/multi-server
+            docker push abhijeetjha1995/multi-worker
+      - run:
+          name: Installing EBS cli 
+          command: |
+            sudo apt-get -y -qq update
+            sudo apt-get install python3-pip python3-dev build-essential
+            sudo pip3 install awsebcli botocore==1.19.63 --upgrade
+      - run:
+          name: Deploy to Elastic Beanstalk
+          command: |
+            eb deploy Multidockerdeploy-env
+workflows:
+  version: 2.1
+  build_deploy:
+    jobs:
+      - unit-test
+      - deploy:
+          requires:
+            - unit-test
