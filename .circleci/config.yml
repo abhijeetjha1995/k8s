@@ -1,30 +1,38 @@
 version: 2.1
 jobs:
-  machine:
-    enabled: true
-  setup:
+  # machine:
+  #   enabled: true
+  # setup:
+  #   working_directory: ~/app
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Update npm
+  #         command: "sudo npm install -g npm@latest"
+  #     - run:
+  #         name: Run Unit tests
+  #         command: |
+  #           docker build -t abhijeetjha1995/react-test -f ./client/Dockerfile.dev ./client
+  #           docker run -e CI=true abhijeetjha1995/react-test npm test 
+  #           SHA=$(git rev-parse HEAD)
+            
+  #     - save_cache:
+  #         key: v1-repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+  #         paths:
+  #           - ~/app
+  test:
+    machine:
+      enabled: true
     working_directory: ~/app
     steps:
       - checkout
-      - run:
-          name: Update npm
-          command: "sudo npm install -g npm@latest"
       - run:
           name: Run Unit tests
           command: |
             docker build -t abhijeetjha1995/react-test -f ./client/Dockerfile.dev ./client
             docker run -e CI=true abhijeetjha1995/react-test npm test 
             SHA=$(git rev-parse HEAD)
-            
-      - save_cache:
-          key: v1-repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-          paths:
-            - ~/app
-  test:
-    docker:
-      - image: circleci/node:10.15.3
-    working_directory: ~/app
-    steps:
+
       - restore_cache:
           key: v1-repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
