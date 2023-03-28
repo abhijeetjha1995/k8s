@@ -3,8 +3,6 @@ jobs:
   machine:
     enabled: true
   setup:
-    docker:
-      - image: circleci/node:10.15.3
     working_directory: ~/app
     steps:
       - checkout
