@@ -45,6 +45,7 @@ jobs:
           command: |
             echo 'SHA=$(git rev-parse HEAD)' >> "$BASH_ENV"
             echo ${SHA}
+            echo git rev-parse HEAD
 
       - run:
           name: Login to repository and build docker image
