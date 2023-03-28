@@ -11,7 +11,7 @@ jobs:
           command: |
             docker build -t abhijeetjha1995/react-test -f ./client/Dockerfile.dev ./client
             docker run -e CI=true abhijeetjha1995/react-test npm test 
-            console.log($(git rev-parse HEAD))
+            console.log('ABhi')
   build_image_and_deploy_staging:
     docker:
       - image: circleci/python:3.7
