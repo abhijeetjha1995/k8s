@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  aws-eks: circleci/aws-eks@0.0.8
+
 jobs:
   test:
     machine:
@@ -11,69 +14,54 @@ jobs:
           name: Run Unit tests
           command: |
             docker build -t abhijeetjha1995/react-test -f ./client/Dockerfile.dev ./client
-            docker run -e CI=true abhijeetjha1995/react-test npm test 
-  build_image_and_deploy_staging:
-    docker:
-      - image: cimg/node:18.11.0
+            docker run -e CI=true abhijeetjha1995/react-test npm test
+  dockerImage: 
+    machine:
+      enabled: true
     steps:
+      - checkout
       - run:
-          name: Install awscli and gettext-base
+          name: Login Docker Hub and Upload image to Hub
           command: |
-            sudo apt-get -y -qq update
-            sudo apt-get install python3-pip python3-dev build-essential
-            sudo pip3 install awscli
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+            docker build -t abhijeetjha1995/multi-client ./client
+            docker build -t abhijeetjha1995/multi-nginx ./nginx
+            docker build -t abhijeetjha1995/multi-server ./server
+            docker build -t abhijeetjha1995/multi-worker ./worker
+            docker push abhijeetjha1995/multi-client
+            docker push abhijeetjha1995/multi-nginx
+            docker push abhijeetjha1995/multi-server
+            docker push abhijeetjha1995/multi-worker
+  deploy:
+    executor: aws-eks/python-3.8
+    steps:
+      - checkout
       - run:
-          name: Install aws-iam-authenticator
+          name: Configure AWS CLI
           command: |
-            curl -o aws-iam-authenticator curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/aws-iam-authenticator
-            chmod +x ./aws-iam-authenticator
-            sudo mv ./aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
+            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+            aws configure set default.region $AWS_DEFAULT_REGION
+      - aws-eks/create-cluster:
+          cluster-name: my-cluster
+          version: "1.19"
+      - aws-eks/update-kubeconfig:
+          cluster-name: my-cluster
       - run:
-          name: Install kubectl
+          name: Apply Deployment Manifest
           command: |
-            curl -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/kubectl
-            chmod +x ./kubectl
-            sudo mv ./kubectl /usr/local/bin/kubectl
+            kubectl apply -f deployment.yml
 
-      - setup_remote_docker
-
-      - run:
-          name: Console
-          command: echo 'SHA=$(git rev-parse HEAD)' >> "$BASH_ENV"
-      - run:
-          name: "Print console"
-          command: echo ${SHA}
-
-      - run:
-          name: Login to repository and build docker image
-          command: |
-            eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
-            docker build -t ${AWS_REPOSITORY_URL}/${REPOSITORY_NAME}:${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM} .
-            docker push ${AWS_REPOSITORY_URL}/${REPOSITORY_NAME}:${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}
-      - run:
-          name: Prepare K8S templates
-          command: |
-            aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name $CLUSTER_NAME
-            rm -rf .k8s/.generated && mkdir -p .k8s/.generated
-            for f in .k8s/templates/staging.yml
-              do
-              envsubst < $f > ".k8s/.generated/$(basename $f)"
-            done
-      - run:
-          name: Deploy
-          command: |
-            kubectl apply -f .k8s/.generated/ --validate=true
-            kubectl get pod
 
 workflows:
   version: 2.1
   build-test-and-deploy:
     jobs:
       - test
-      - build_image_and_deploy_staging:
+      - deploy:
           requires:
             - test
-          # filters:
-          #   branches:
-          #     only:
-          #       - master
+          filters:
+            branches:
+              only:
+                - master
